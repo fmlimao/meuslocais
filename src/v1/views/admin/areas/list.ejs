@@ -1,0 +1,164 @@
+<%- contentFor('body') %>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Áreas
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/v1"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><i class="fa fa-cogs"></i> Configurações</li>
+        <li class="active">Áreas</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <p>
+        <button class="btn btn-default" @click.prevent="openNewAreaModal()">
+            <span class="fa fa-plus"></span> Adicionar área
+        </button>
+    </p>
+
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Listagem de Áreas</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="table-responsive">
+                <table id="tableAreas" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origem</th>
+                            <th>Área</th>
+                            <th>Criado em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+<!-- Modal New Area -->
+<div class="modal fade" id="modalNewArea" tabindex="-1" role="dialog" aria-labelledby="modalNewAreaLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form id="formFiltro" novalidate="" @submit.prevent="handleNewArea()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalNewAreaLabel">Adicionar Área</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-grou" :class="{
+                        'has-error': newArea.fields.Descricao.error
+                    }">
+                        <label for="areaDescricao">Nome da área</label>
+                        <input type="text" id="areaDescricao" class="form-control" placeholder="Insira o nome da área"
+                            v-model="newArea.fields.Descricao.value" :disabled="newArea.disabled">
+                        <small class="help-block" v-html="newArea.fields.Descricao.messages.join(', ')"></small>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange" :disabled="newArea.disabled">
+                        Adicionar
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" :disabled="newArea.disabled">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit Area -->
+<div class="modal fade" id="modalEditArea" tabindex="-1" role="dialog" aria-labelledby="modalEditAreaLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form id="formFiltro" novalidate="" @submit.prevent="handleEditArea()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalEditAreaLabel">Editar Área</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-grou" :class="{
+                        'has-error': editArea.fields.Descricao.error
+                    }">
+                        <label for="areaDescricao">Nome da área</label>
+                        <input type="text" id="areaDescricao" class="form-control"
+                            v-model="editArea.fields.Descricao.value"
+                            :placeholder="editArea.fields.DescricaoOriginal.value" :disabled="editArea.disabled">
+                        <small class="help-block" v-html="editArea.fields.Descricao.messages.join(', ')"></small>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange" :disabled="editArea.disabled">
+                        Adicionar
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" :disabled="editArea.disabled">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Remove Area -->
+<div class="modal fade" id="modalRemoveArea" tabindex="-1" role="dialog" aria-labelledby="modalRemoveAreaLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form id="formFiltro" novalidate="" @submit.prevent="handleRemoveArea()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalRemoveAreaLabel">Remover Área</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <p class="lead">
+                        Deseja realmente remover a área <b>{{ removeArea.fields.Descricao.value }}</b>?
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" :disabled="removeArea.disabled">
+                        Remover
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" :disabled="removeArea.disabled">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<%- contentFor('scripts') %>
+<script src="/v1/js/areas.js"></script>

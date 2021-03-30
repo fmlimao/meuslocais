@@ -1,0 +1,181 @@
+<%- contentFor('body') %>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Subáreas
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/v1"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><i class="fa fa-cogs"></i> Configurações</li>
+        <li class="active">Subáreas</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <p>
+        <button class="btn btn-default" @click.prevent="openNewSubareaModal()">
+            <span class="fa fa-plus"></span> Adicionar subárea
+        </button>
+    </p>
+
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Listagem de Subáreas</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="table-responsive">
+                <table id="tableSubareas" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origem</th>
+                            <th>Área</th>
+                            <th>Subárea</th>
+                            <th>Criado em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+<!-- Modal New Subarea -->
+<div class="modal fade" id="modalNewSubarea" tabindex="-1" role="dialog" aria-labelledby="modalNewSubareaLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form id="formFiltro" novalidate="" @submit.prevent="handleNewSubarea()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalNewSubareaLabel">Adicionar Subárea</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-grou" :class="{
+                        'has-error': newSubarea.fields.D001_AreasID.error
+                    }">
+                        <label for="areaD001_AreasID">D001_AreasID</label>
+                        <select id="areaD001_AreasID" class="form-control" placeholder="D001_AreasID"
+                            v-model="newSubarea.fields.D001_AreasID.value" :disabled="newSubarea.disabled">
+                            <option value="">-- Selecione --</option>
+                            <option v-for="area in areasList" :value="area.D001_AreasID">{{ area.Descricao }}</option>
+                        </select>
+                        <small class="help-block" v-html="newSubarea.fields.D001_AreasID.messages.join(', ')"></small>
+                    </div>
+
+                    <div class="form-grou" :class="{
+                        'has-error': newSubarea.fields.Descricao.error
+                    }">
+                        <label for="areaDescricao">Nome da subárea</label>
+                        <input type="text" id="areaDescricao" class="form-control"
+                            placeholder="Insira o nome da subárea" v-model="newSubarea.fields.Descricao.value"
+                            :disabled="newSubarea.disabled">
+                        <small class="help-block" v-html="newSubarea.fields.Descricao.messages.join(', ')"></small>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange" :disabled="newSubarea.disabled">
+                        Adicionar
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        :disabled="newSubarea.disabled">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit Subarea -->
+<div class="modal fade" id="modalEditSubarea" tabindex="-1" role="dialog" aria-labelledby="modalEditSubareaLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form id="formFiltro" novalidate="" @submit.prevent="handleEditSubarea()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalEditSubareaLabel">Editar Subárea</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-grou" :class="{
+                        'has-error': editSubarea.fields.Descricao.error
+                    }">
+                        <label for="areaDescricao">Nome da subárea</label>
+                        <input type="text" id="areaDescricao" class="form-control"
+                            v-model="editSubarea.fields.Descricao.value"
+                            :placeholder="editSubarea.fields.DescricaoOriginal.value" :disabled="editSubarea.disabled">
+                        <small class="help-block" v-html="editSubarea.fields.Descricao.messages.join(', ')"></small>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange" :disabled="editSubarea.disabled">
+                        Adicionar
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        :disabled="editSubarea.disabled">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Remove Subarea -->
+<div class="modal fade" id="modalRemoveSubarea" tabindex="-1" role="dialog" aria-labelledby="modalRemoveSubareaLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form id="formFiltro" novalidate="" @submit.prevent="handleRemoveSubarea()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalRemoveSubareaLabel">Remover Subárea</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <p class="lead">
+                        Deseja realmente remover a subárea <b>{{ removeSubarea.fields.Descricao.value }}</b>?
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" :disabled="removeSubarea.disabled">
+                        Remover
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        :disabled="removeSubarea.disabled">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<%- contentFor('scripts') %>
+<script src="/v1/js/subareas.js"></script>
