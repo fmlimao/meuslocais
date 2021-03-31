@@ -3,6 +3,8 @@ const router = express.Router();
 
 const maintenanceMiddleware = require('./middlewares/api/maintenance');
 const authMiddleware = require('./middlewares/api/auth');
+const getUserMiddleware = require('./middlewares/api/get-user');
+const getUserWithoutActiveMiddleware = require('./middlewares/api/get-user-without-active');
 // const getAreaMiddleware = require('./middlewares/api/get-area');
 // const getSubareaMiddleware = require('./middlewares/api/get-subarea');
 
@@ -15,6 +17,11 @@ router.post('/auth', require('./controllers/api/auth/auth'));
 router.use(authMiddleware);
 
 router.get('/users', require('./controllers/api/users/list'));
+router.post('/users', require('./controllers/api/users/store'));
+router.get('/users/:user_id', getUserMiddleware, require('./controllers/api/users/show'));
+router.put('/users/:user_id', getUserMiddleware, require('./controllers/api/users/update'));
+router.put('/users/:user_id/active/:active', getUserWithoutActiveMiddleware, require('./controllers/api/users/active'));
+router.delete('/users/:user_id', getUserMiddleware, require('./controllers/api/users/remove'));
 
 // router.get('/areas', require('./controllers/api/areas/list'));
 // router.post('/areas', require('./controllers/api/areas/store'));

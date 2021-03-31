@@ -18,6 +18,12 @@ module.exports = async (req, res) => {
             filter: req.query,
         });
 
+        users.content.users = users.content.users.map(user => {
+            delete user.password;
+            delete user.salt;
+            return user;
+        });
+
         if (draw) {
             retDatatable.data = users.content.users;
 

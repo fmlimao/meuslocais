@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// router.get('/', (req, res) => {
-//     res.redirect('/admin/v1');
-// });
+router.get('/', require('./v1/controllers/site/home'));
 
 // router.use('/admin/v1', require('./v1/routes-admin'));
 
